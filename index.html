@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>늦조 근무 자동 편성</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-wrap">
+
+    <header class="site-header">
+      <h1>늦조 근무 자동 편성</h1>
+      <p class="subtitle">한컴말랑말랑행복케어주야간보호센터</p>
+    </header>
+
+    <main>
+
+      <!-- ① 근무표 업로드 -->
+      <section class="card" id="sec-upload">
+        <div class="step-badge">STEP 1</div>
+        <h2>근무표 업로드</h2>
+        <p class="desc">이달 근무표 엑셀 파일(.xlsx / .xls)을 아래 영역에 끌어다 놓거나 클릭해서 선택하세요.</p>
+
+        <div class="drop-zone" id="drop-zone">
+          <span class="drop-icon">📂</span>
+          <p>파일을 여기에 끌어다 놓거나 <strong>클릭하여 선택</strong></p>
+          <p class="hint">.xlsx · .xls 지원</p>
+          <input type="file" id="file-input" accept=".xlsx,.xls" hidden />
+        </div>
+
+        <div id="file-status" class="file-status hidden"></div>
+
+        <div id="employee-list" class="employee-list hidden">
+          <p class="employee-list-title">인식된 요양보호사</p>
+          <div id="employee-chips"></div>
+        </div>
+      </section>
+
+      <!-- ② 연도·월 확인 및 공휴일 -->
+      <section class="card hidden" id="sec-date">
+        <div class="step-badge">STEP 2</div>
+        <h2>연도 · 월 확인</h2>
+        <p class="desc">파일에서 자동으로 감지한 연도·월입니다. 다르면 직접 수정한 뒤 <strong>확인</strong>을 누르세요.</p>
+
+        <div class="date-row">
+          <label class="date-label">
+            연도
+            <input type="number" id="year-input" min="2024" max="2035" />
+          </label>
+          <label class="date-label">
+            월
+            <input type="number" id="month-input" min="1" max="12" />
+          </label>
+          <button class="btn-primary" id="confirm-date-btn">확인</button>
+        </div>
+
+        <!-- 공휴일 표시 영역 -->
+        <div id="holiday-area" class="holiday-area hidden">
+          <h3>이 달의 공휴일</h3>
+          <p class="hint">음력 공휴일(설날·추석·부처님오신날)은 2024~2026년 데이터가 내장되어 있습니다.<br>
+            그 외 연도이거나 임시공휴일은 아래에서 직접 추가/삭제할 수 있습니다.</p>
+
+          <ul id="holiday-list" class="holiday-list"></ul>
+
+          <div class="holiday-add-row">
+            <input type="date" id="holiday-date-input" />
+            <input type="text" id="holiday-name-input" placeholder="공휴일 이름 (예: 선거일)" />
+            <button class="btn-secondary" id="add-holiday-btn">+ 추가</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ③ 편성 결과 -->
+      <section class="card hidden" id="sec-result">
+        <div class="step-badge">STEP 3</div>
+        <h2>늦조 편성 결과</h2>
+
+        <div class="action-bar">
+          <button class="btn-primary" id="generate-btn">늦조 편성하기</button>
+          <button class="btn-secondary hidden" id="print-btn" onclick="window.print()">🖨️ 인쇄</button>
+          <button class="btn-secondary hidden" id="copy-btn">📋 텍스트 복사</button>
+        </div>
+
+        <!-- 경고 안내문 -->
+        <div id="warning-box" class="warning-box hidden">
+          <strong>⚠️ 주의:</strong> 엑셀 파일에 성별 정보가 없습니다.
+          편성된 요양보호사가 <strong>남성(오태봉 · 현택정 · 김연욱)</strong>이 아닌지 반드시 확인해 주세요.
+        </div>
+
+        <div id="result-area"></div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>데이터는 브라우저 내에서만 처리되며 서버로 전송되지 않습니다.</p>
+    </footer>
+
+  </div><!-- .page-wrap -->
+
+  <!-- SheetJS (엑셀 파싱 라이브러리) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <script src="js/constants.js"></script>
+  <script src="js/holidays.js"></script>
+  <script src="js/excelParser.js"></script>
+  <script src="js/scheduler.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
