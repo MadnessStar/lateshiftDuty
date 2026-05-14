@@ -78,7 +78,8 @@
 
         <div class="action-bar">
           <button class="btn-primary" id="generate-btn">늦조 편성하기</button>
-          <button class="btn-secondary hidden" id="print-btn" onclick="window.print()">🖨️ 인쇄</button>
+          <button class="btn-secondary hidden" id="print-btn" onclick="window.print()">🖸️ PDF 저장 / 인쇄</button>
+          <button class="btn-secondary hidden" id="png-btn">🖼️ PNG 저장</button>
           <button class="btn-secondary hidden" id="copy-btn">📋 텍스트 복사</button>
         </div>
 
@@ -101,6 +102,8 @@
 
   <!-- SheetJS (엑셀 파싱 라이브러리) -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <!-- html2canvas (PNG 다운로드용) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/holidays.js"></script>
   <script src="js/excelParser.js"></script>

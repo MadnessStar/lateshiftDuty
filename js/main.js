@@ -30,6 +30,7 @@ const generateBtn    = document.getElementById('generate-btn');
 const resultArea     = document.getElementById('result-area');
 const warningBox     = document.getElementById('warning-box');
 const printBtn       = document.getElementById('print-btn');
+const pngBtn         = document.getElementById('png-btn');
 const copyBtn        = document.getElementById('copy-btn');
 
 // ── 파일 업로드 ───────────────────────────────────────────────
@@ -187,6 +188,7 @@ generateBtn.addEventListener('click', () => {
   renderResult(state.scheduleResult);
   warningBox.classList.remove('hidden');
   printBtn.classList.remove('hidden');
+  pngBtn.classList.remove('hidden');
   copyBtn.classList.remove('hidden');
   resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -275,6 +277,30 @@ function renderCandidates(list) {
 function renderExcluded(list) {
   if (!list.length) return '';
   return list.map(c => `<span class="badge-excluded">${c.name}(${c.reason})</span>`).join(' ');
+}
+
+// ── PNG 저장 ───────────────────────────────────────────────
+if (pngBtn) {
+  pngBtn.addEventListener('click', async () => {
+    pngBtn.disabled = true;
+    pngBtn.textContent = '🖼️ 저장 중닳니다…';
+    try {
+      const canvas = await html2canvas(resultArea, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+      });
+      const link = document.createElement('a');
+      link.download = `늘조편성_${state.year}년${state.month}월.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      alert('PNG 저장 중 오류가 발생했습니다: ' + err.message);
+    } finally {
+      pngBtn.disabled = false;
+      pngBtn.textContent = '🖼️ PNG 저장';
+    }
+  });
 }
 
 // ── 텍스트 복사 ───────────────────────────────────────────────
